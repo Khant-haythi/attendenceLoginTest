@@ -1,8 +1,9 @@
-import 'package:attendance_login/services/api_client.dart';
+
 import 'package:flutter/material.dart';
-import 'api_login_screen.dart';
-import 'login_screen.dart'; // make sure this file exists
-import 'home_screen.dart';  // optional, used after login
+
+import '0_data/datasources/api_client.dart';
+import '2_application/pages/api_login_screen.dart';
+import '2_application/pages/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
