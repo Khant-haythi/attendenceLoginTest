@@ -2,7 +2,7 @@ import 'package:attendance_login/services/api_client.dart';
 import 'package:flutter/material.dart';
 import 'api_login_screen.dart';
 import 'login_screen.dart'; // make sure this file exists
-import 'home_screen.dart' hide HomeScreen;  // optional, used after login
+import 'home_screen.dart';  // optional, used after login
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
