@@ -9,7 +9,7 @@ import 'home_screen.dart';
 
 
 // Define the login function that returns a Future<bool>
-Future<String?> login(String username, String password) async {
+Future<bool> login(String username, String password) async {
   try {
     print('Sending login request...');
     final response = await ApiClient.dio.post(
@@ -31,20 +31,15 @@ Future<String?> login(String username, String password) async {
     await ApiClient.storage.write(key: 'accessToken', value: data['accessToken']);
     await ApiClient.storage.write(key: 'refreshToken', value: data['refreshToken']);
 
-    return null; // success: no error
+    return true; // success: no error
   } on DioException catch (e) {
     print("❌ Login failed:");
     print("Status: ${e.response?.statusCode}");
     print("Data: ${e.response?.data}");
-
-    if (e.response?.data is Map && e.response?.data['message'] != null) {
-      return e.response?.data['message']; // show server error
-    }
-
-    return "Invalid email or password.";
+    return false;
   } catch (e) {
     print("Unexpected error: $e");
-    return "An unexpected error occurred.";
+    return false;
   }
 }
 
@@ -79,9 +74,9 @@ class _LoginScreenState extends State<ApiLoginScreen> {
       _error = null;
     });
 
-    final errorMessage = await login(email, password);
+    final success = await login(email, password);
 
-    if (errorMessage == null) {
+    if (success) {
       if (_keepMeLoggedIn) {
         await ApiClient.storage.write(key: 'keepLoggedIn', value: 'true');
       } else {
@@ -94,11 +89,10 @@ class _LoginScreenState extends State<ApiLoginScreen> {
       );
     } else {
       setState(() {
-        _error = errorMessage;
+        _error = 'Invalid email or password.';
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +279,3 @@ class _LoginScreenState extends State<ApiLoginScreen> {
 
 
 }
-
-
-
